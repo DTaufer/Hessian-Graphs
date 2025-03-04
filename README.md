@@ -10,5 +10,7 @@ Feel free to contact us for questions and suggestions!
 # Contacts
 
 Marzio Mula: marziomula@gmail.com
+
 Federico Pintore: federico.pintore@gmail.com
+
 Daniele Taufer: daniele.taufer@gmail.com
