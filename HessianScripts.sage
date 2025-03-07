@@ -46,14 +46,22 @@ def colorHessGraph(p):
 	sage.graphs.graph_plot.DEFAULT_SHOW_OPTIONS['figsize'] = [10,10]
 	return G
 	
+def genFinder(F):
+	"""Finds a generator of F*/F*^6"""
+	q=F.cardinality()
+	S.<X>=PolynomialRing(F)
+	u=F.random_element()
+	while u.is_square()==True or (mod(q,3)==1 and (X^3-u).is_irreducible()==False):
+		u=F.random_element()
+	return u
 	
-def iterHess(p,j,N): 
+def iterHess(p,j,N):
 	"""
 	Computes the N-th iterated Hessian of j in Fp.
 	"""
-	F=FiniteField(p)
+	F=GF(p,'a')
 	S.<X>=PolynomialRing(F)
-	u=F.multiplicative_generator()
+	u=genFinder(F)
 	s=0
 	while (X^3-j*u^(2*s)).is_irreducible():
 		s+=1
@@ -78,3 +86,4 @@ def iterHess(p,j,N):
 				return (6912-j)^3/(27*j^2)
 		else:
 			return j
+	
