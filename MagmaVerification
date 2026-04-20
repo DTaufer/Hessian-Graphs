@@ -1,0 +1,42 @@
+// MAGMA file: symbolic check of Lemma 3.15
+
+Q<xx> := PolynomialRing(Rationals());
+K<r> := NumberField(xx^2+3);
+z := (-r-1)/2; z^3 eq 1;
+Kk<k> := FunctionField(K);
+
+function Psi( _P )
+	X := _P[1]; Y := _P[2];
+	return [ -(X^3+k)/(3*X^2), -Y*(X^3-2*k)/(3*r*X^3) ];
+end function;
+
+function Rho( _P )
+	X := _P[1]; Y := _P[2];
+	return [ z*X,-Y ];
+end function;
+
+function Double( _P )
+	X := _P[1]; Y := _P[2];
+	lambda := 3*X^2/(2*Y);
+	Xout := lambda^2-2*X;
+	return [Xout, lambda*(X-Xout)-Y];
+end function;
+
+function Sum( _P, _Q )
+	XP := _P[1]; YP := _P[2];
+	XQ := _Q[1]; YQ := _Q[2];
+	lambda := (YQ-YP)/(XQ-XP);
+	Xout := lambda^2-XP-XQ;
+	return [Xout , lambda*(XP - Xout) - YP];
+end function;
+
+function Minus( _P )
+	XP := _P[1]; YP := _P[2];
+	return [XP, -YP];
+end function;
+
+
+E := EllipticCurve([Kk!0,k/4]);
+F<x,y> := FunctionField(E);
+P := [x,y];
+Sum( Double( Rho( P ) ), Minus( P ) ) eq Psi( P );
