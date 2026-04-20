@@ -1,6 +1,6 @@
 # The Hessian of elliptic curves
 
-In this repository you find the SAGE functions to compute Hessian graphs and to evaluate the iterated Hessian efficiently.
+In this repository, you will find the MAGMA formal verification and SAGE functions to compute Hessian graphs and to evaluate the iterated Hessian efficiently.
 
 All the details are described in our paper (ArXiv): https://doi.org/10.48550/arXiv.2407.17042.
 
