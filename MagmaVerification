@@ -46,7 +46,8 @@ Sum( Double( Rho( P ) ), Minus( P ) ) eq Psi( P );
 
 // Remark 3.23
 
-K<a> := GF(25);
+p := 5; // Works for any prime p = 2 (mod 3)
+K<a> := GF(p^2);
 r := Random({_x : _x in K |  _x^2 eq -3}); // r^2 eq -3;
 z := (-r-1)/2; // z^3 eq 1;
 
@@ -63,12 +64,12 @@ function Sum( _P, _Q )
 	return [Xout , lambda*(XP - Xout) - YP];
 end function;
 
-function pi5( _P )
-	return [_P[1]^5, _P[2]^5];
+function Frob( _P )
+	return [_P[1]^p, _P[2]^p];
 end function;
 
 function psi( _P ) //psi = Frob + 1
-	return Sum(pi5(_P),_P);
+	return Sum(Frob(_P),_P);
 end function;
 
 E := EllipticCurve([K!0,1]);
@@ -76,7 +77,7 @@ F<x,y> := FunctionField(E);
 P := [x,y];
 
 // We observe that eq. (11) works for the Frobenius, although it does not commute with Aut(E)
-pi5( RepeatedRho(P, 1) ) eq RepeatedRho( pi5(P),5 );
+Frob( RepeatedRho(P, 1) ) eq RepeatedRho( Frob(P),5 );
 
 // We check that eq. (11) does NOT hold for Frobenius + 1 
 psi( RepeatedRho(P, 1) ) in { RepeatedRho( psi(P),_i ) : _i in [0..5] };
