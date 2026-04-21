@@ -1,4 +1,6 @@
-// MAGMA file: symbolic check of Lemma 3.15
+// MAGMA file: symbolic check of Lemma 3.15 and Remark 3.23
+
+// Lemma 3.15
 
 Q<xx> := PolynomialRing(Rationals());
 K<r> := NumberField(xx^2+3);
@@ -40,3 +42,43 @@ E := EllipticCurve([Kk!0,k/4]);
 F<x,y> := FunctionField(E);
 P := [x,y];
 Sum( Double( Rho( P ) ), Minus( P ) ) eq Psi( P );
+
+
+// Remark 3.23
+
+K<a> := GF(25);
+r := Random({_x : _x in K |  _x^2 eq -3}); // r^2 eq -3;
+z := (-r-1)/2; // z^3 eq 1;
+
+function RepeatedRho( _P, _i )
+	X := _P[1]; Y := _P[2];
+	return [ z^_i*X,(-1)^_i*Y ];
+end function;
+
+function Sum( _P, _Q )
+	XP := _P[1]; YP := _P[2];
+	XQ := _Q[1]; YQ := _Q[2];
+	lambda := (YQ-YP)/(XQ-XP);
+	Xout := lambda^2-XP-XQ;
+	return [Xout , lambda*(XP - Xout) - YP];
+end function;
+
+function pi5( _P )
+	return [_P[1]^5, _P[2]^5];
+end function;
+
+function psi( _P ) //psi = Frob + 1
+	return Sum(pi5(_P),_P);
+end function;
+
+E := EllipticCurve([K!0,1]);
+F<x,y> := FunctionField(E);
+P := [x,y];
+
+// We observe that eq. (11) works for the Frobenius, although it does not commute with Aut(E)
+pi5( RepeatedRho(P, 1) ) eq RepeatedRho( pi5(P),5 );
+
+// We check that eq. (11) does NOT hold for Frobenius + 1 
+psi( RepeatedRho(P, 1) ) in { RepeatedRho( psi(P),_i ) : _i in [0..5] };
+
+
